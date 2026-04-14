@@ -15,9 +15,16 @@ The WireCell toolkit runs a chain per anode: **noise filtering → signal proces
 
 Ask the user to provide:
 
-1. The full **running command** and the **environment** (e.g., how the toolkit was set up/compiled, relevant env vars)
-2. **Where in the chain** did the crash occur? (Which step: noise filtering, signal processing, imaging, clustering?)
-3. **Which anode** was being processed when the crash happened?
+1. The full **running command**
+2. A description of the **environment** (e.g., how the toolkit was set up/compiled, relevant env vars)
+3. The **output they saw** — paste the full terminal output, log, or error message
+
+Once the user provides this, extract the following from the output:
+
+- **Which step in the chain crashed** — look for the last successfully completed step or the step name that appears in the traceback/log just before the crash. The chain order is: noise filtering → signal processing → imaging → clustering.
+- **Which anode was being processed** — look for anode identifiers (e.g., `anode0`, `anode:0`, `APA 0`, or similar patterns) in the output near the crash point.
+
+Summarize your findings and confirm with the user before proceeding to Phase 2. If the output does not contain enough information to determine the crash location or anode, ask the user to re-run with increased verbosity or provide additional logs.
 
 ---
 
