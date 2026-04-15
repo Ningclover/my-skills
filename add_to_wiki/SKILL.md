@@ -1,0 +1,125 @@
+---
+name: add_to_wiki
+description: Scan the current conversation for confirmed code understanding and explanations, then write or update pages in the target wiki. Invoked as /add_to_wiki [wiki_path] [index_label]. Defaults to /nfs/data/1/xning/wirecell-working/my_wirecell_wiki if no path is given.
+---
+
+# Add to Wiki
+
+## Purpose
+
+Extract **confirmed code understanding** from the current conversation and persist it into a structured wiki. Only include knowledge that is certain — algorithm explanations, data structure descriptions, control flow, API semantics. Exclude: debug logs, debug print statements, speculative bug hypotheses, guesses, temporary investigation notes, and anything prefixed with "I think" or "likely".
+
+---
+
+## Step 1 — Resolve the wiki path
+
+- If the user provided a path as an argument, use that.
+- Otherwise use the default: `/nfs/data/1/xning/wirecell-working/my_wirecell_wiki`
+- Check that the directory exists (`ls <wiki_path>/wiki/`).
+  - If it does not exist: ask the user to provide a valid wiki path, or do nothing if they decline.
+- Read `<wiki_path>/CLAUDE.md` to understand the wiki's schema, page conventions, and index structure before writing anything.
+
+---
+
+## Step 2 — Read the wiki index
+
+Read `<wiki_path>/wiki/index.md` to understand:
+- What pages already exist
+- How the index is organized (sections and sub-sections)
+- Where new content should be placed
+
+---
+
+## Step 3 — Extract knowledge from the conversation
+
+Scan the entire conversation for **confirmed, certain** code understanding. Collect items in these categories:
+
+### What to include
+- **Function/method explanations** — what a function does, its inputs, outputs, side effects
+- **Algorithm descriptions** — step-by-step logic of a non-trivial algorithm
+- **Data structure semantics** — what fields mean, ownership, lifetime
+- **Control flow rationale** — why a swap, branch, or ordering choice exists
+- **API/interface semantics** — what parameters do, return value meaning, constraints
+- **Cross-file relationships** — how functions in different files call each other
+
+### What to exclude (strictly)
+- Debug print statements added during investigation
+- Hypotheses about bug causes that were not confirmed by output
+- Guesses, speculation, "likely", "probably", "I think" statements
+- Temporary investigation notes (crash logs, backtrace analysis, heap corruption theories)
+- Step-by-step debugging procedures
+- Anything that only makes sense in the context of the current debugging session
+
+---
+
+## Step 4 — Determine target pages
+
+For each piece of extracted knowledge, decide:
+
+1. **Does a relevant page already exist?** Check the index. If yes, plan to update it.
+2. **Is there enough new content to justify a new page?** If the content belongs to a new topic not covered by any existing page, plan to create one.
+3. **What section/sub-section in the index does it belong to?** (e.g., `clus → Clustering`, `clus → Pattern Recognition`, `sigproc → Noise Filtering`, etc.)
+
+---
+
+## Step 5 — Write or update pages
+
+For each target page:
+
+### If updating an existing page
+- Read the existing page first.
+- Add new content in the appropriate section. Do not duplicate what is already there.
+- Update the `updated:` date in the YAML frontmatter.
+
+### If creating a new page
+- Use the wiki's filename convention (Title Case with spaces, e.g., `Cluster Merging.md`).
+- Use the suggested page structure from `CLAUDE.md`:
+  ```
+  # Page Title
+  Brief one-line description.
+
+  ## Purpose
+  ## Method
+  ## Inputs / Outputs
+  ## Configuration (if applicable)
+  ## See also
+  ## Sources
+  ```
+- Include appropriate YAML frontmatter (`tags`, `updated`).
+
+### Content rules
+- Be concise. Prefer bullet points over prose.
+- Use backtick paths for code references: `` `src/clus/Facade_Cluster.cxx:2227` ``
+- Use `[[Page Title]]` wikilinks for cross-references.
+- Do not invent facts — only write what was explicitly explained or confirmed in the conversation.
+
+---
+
+## Step 6 — Update the index
+
+- Add any new pages to `<wiki_path>/wiki/index.md` under the correct section.
+- Each index entry: one line, format `- [[Page Title]] — one-line description`.
+- Update the `updated:` date at the top of index.md.
+
+---
+
+## Step 7 — Append to the log
+
+Append to `<wiki_path>/wiki/log.md`:
+
+```
+## [YYYY-MM-DD] ingest | <short description>
+- <bullet: what was added or updated>
+- <bullet: pages created>
+```
+
+---
+
+## Rules (Always Follow)
+
+1. **Certain knowledge only.** If you are not sure something is correct based on the conversation, do not write it.
+2. **No debug artifacts.** Never write debug print formats, GDB backtraces, or crash investigation notes into the wiki.
+3. **No speculation.** Do not write "the crash is likely caused by..." or any unconfirmed hypothesis.
+4. **Read before write.** Always read `CLAUDE.md` and `index.md` before writing any page. Always read an existing page before updating it.
+5. **Minimal footprint.** Do not rewrite pages that don't need changing. Only update sections that have new content.
+6. **Ask if unsure about placement.** If the index structure doesn't clearly indicate where content belongs, ask the user before creating a new section.
