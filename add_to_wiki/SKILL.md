@@ -103,7 +103,38 @@ For each target page:
 
 ---
 
-## Step 7 — Append to the log
+## Step 7 — Create a session record
+
+Create a session record page at `<wiki_path>/wiki/source-session-<YYYY-MM-DD>-<slug>.md`. This is the citable anchor for the knowledge written in steps 5–6. Use a short slug describing the investigation topic (e.g., `cluster-merging`, `roi-debug`).
+
+```markdown
+---
+tags: [source]
+type: conversation
+date: <YYYY-MM-DD>
+context: <one-line description of what was being investigated>
+files_touched: [<list of source files read or modified during the session>]
+updated: <YYYY-MM-DD>
+---
+
+# source-session-<YYYY-MM-DD>-<slug>
+
+<Brief description of the session: what problem was being debugged, what experiment/module.>
+
+## Confirmed findings
+- <each piece of confirmed knowledge extracted> — see [[Page Title]]
+
+## Context
+<What code was being read, what crash or behavior was being investigated.>
+```
+
+Then, for each page written in step 5, ensure it has a `## Sources` section that includes `- [[source-session-<YYYY-MM-DD>-<slug>]]`.
+
+Also add the new session record to `<wiki_path>/wiki/index.md` under the **Sources** section.
+
+---
+
+## Step 8 — Append to the log
 
 Append to `<wiki_path>/wiki/log.md`:
 
@@ -111,6 +142,7 @@ Append to `<wiki_path>/wiki/log.md`:
 ## [YYYY-MM-DD] ingest | <short description>
 - <bullet: what was added or updated>
 - <bullet: pages created>
+- session record: source-session-<YYYY-MM-DD>-<slug>.md
 ```
 
 ---
