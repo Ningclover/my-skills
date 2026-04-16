@@ -1,6 +1,6 @@
 ---
 name: add_to_wiki
-description: Scan the current conversation for confirmed code understanding and explanations, then write or update pages in the target wiki. Invoked as /add_to_wiki [wiki_path] [index_label]. Defaults to /nfs/data/1/xning/wirecell-working/my_wirecell_wiki if no path is given.
+description: Scan the current conversation for confirmed code understanding and explanations, then write or update pages in the target wiki. Invoked as /add_to_wiki [wiki_path] [index_label]. Defaults to ~/my_wirecell_wiki if no path is given.
 ---
 
 # Add to Wiki
@@ -14,7 +14,7 @@ Extract **confirmed code understanding** from the current conversation and persi
 ## Step 1 — Resolve the wiki path
 
 - If the user provided a path as an argument, use that.
-- Otherwise use the default: `/nfs/data/1/xning/wirecell-working/my_wirecell_wiki`
+- Otherwise use the default: `~/my_wirecell_wiki`
 - Check that the directory exists (`ls <wiki_path>/wiki/`).
   - If it does not exist: ask the user to provide a valid wiki path, or do nothing if they decline.
 - Read `<wiki_path>/CLAUDE.md` to understand the wiki's schema, page conventions, and index structure before writing anything.

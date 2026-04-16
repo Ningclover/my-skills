@@ -1,6 +1,6 @@
 ---
 name: add_skill
-description: Create a new Claude Code skill from a description or existing behavior, write it to /nfs/data/1/xning/wirecell-working/my-skills/<skill_name>/SKILL.md, and symlink it into ~/.claude/skills/ so it is immediately available.
+description: Create a new Claude Code skill from a description or existing behavior, write it to ~/my-skills/<skill_name>/SKILL.md, and symlink it into ~/.claude/skills/ so it is immediately available.
 ---
 
 # Add Skill
@@ -25,7 +25,7 @@ If the user says "make this a skill" referring to something already discussed in
 
 Create the file at:
 ```
-/nfs/data/1/xning/wirecell-working/my-skills/<skill_name>/SKILL.md
+~/my-skills/<skill_name>/SKILL.md
 ```
 
 Use this structure:
@@ -62,7 +62,7 @@ Guidelines for writing the skill:
 ## Step 3 — Symlink into ~/.claude/skills/
 
 ```bash
-ln -s /nfs/data/1/xning/wirecell-working/my-skills/<skill_name> /nfs/data/1/xning/.claude/skills/<skill_name>
+ln -s ~/my-skills/<skill_name> ~/.claude/skills/<skill_name>
 ```
 
 Check first that the symlink does not already exist. If it does, skip this step and note it.
