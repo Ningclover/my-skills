@@ -22,7 +22,7 @@ Ask the user to provide:
 
 ### Step 1a — Reproduce yourself
 
-Run the command via Bash. Save output to a temp file (`/nfs/data/1/xning/tmp/` on wcgpu1 — `/tmp/` is full). Confirm:
+Run the command via Bash. Save output to a temp file — ask the user or check memory for the appropriate temp directory on the current server (e.g. `/tmp/` or a user-specific path if `/tmp/` is full). Confirm:
 - **Reproduced** — same failure seen. Show the key lines.
 - **Not reproduced** — different result. Ask user to clarify before proceeding.
 
@@ -122,7 +122,7 @@ Without throttling, millions of lines make the log unreadable.
 
 Prefix every debug print with `[DEBUG]` or a unique tag. This makes them easy to grep and easy to remove cleanly:
 ```bash
-grep "\[DEBUG\]" /nfs/data/1/xning/tmp/run.log | head -30
+grep "\[DEBUG\]" /path/to/tmp/run.log | head -30
 ```
 
 ---
@@ -135,7 +135,7 @@ Repeat until the root cause is confirmed by output:
 2. **Hypothesize** — what value or state is wrong, and why?
 3. **Instrument** — add print(s) that will confirm or refute the hypothesis. Print the actual values involved.
 4. **Rebuild and install** — `make -j4 install` (or equivalent). Verify the install timestamp updated.
-5. **Run** — save output to `/nfs/data/1/xning/tmp/`.
+5. **Run** — save output to a temp file in the appropriate directory for this server.
 6. **Read** — grep the log for your debug tags. Decide: confirmed, refuted, or need more data.
 7. **Return to 1.**
 
@@ -244,4 +244,4 @@ Before declaring the bug fixed:
 
 8. **Deferred = upstream.** If crash location drifts when you add/remove probes, the real corruption site is earlier than where the crash fires.
 
-9. **Save logs to `/nfs/data/1/xning/tmp/`.** The `/tmp/` directory is full on wcgpu1.
+9. **Save logs to a writable temp directory.** Check memory or ask the user for the right path on the current server — `/tmp/` may be full on some machines.
