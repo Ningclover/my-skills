@@ -1,6 +1,6 @@
 ---
 name: add_to_wiki
-description: Scan the current conversation for confirmed code understanding and explanations, then write or update pages in the target wiki. Invoked as /add_to_wiki [wiki_path] [index_label]. Defaults to ~/my_wirecell_wiki if no path is given.
+description: Scan the current conversation for confirmed code understanding and explanations, then write or update pages in the target wiki. Automatically selects between ~/my_wirecell_wiki and ~/my_optic_wiki based on conversation content, or accepts an explicit path argument.
 ---
 
 # Add to Wiki
@@ -11,10 +11,30 @@ Extract **confirmed code understanding** from the current conversation and persi
 
 ---
 
+## Step 0 — Select the target wiki
+
+**Before anything else**, determine which wiki the content belongs to. The two available wikis are:
+
+| Wiki | Path | Domain |
+|------|------|--------|
+| `my_wirecell_wiki` | `~/my_wirecell_wiki` | WireCell toolkit — LArTPC signal processing, clustering, imaging, noise filtering, ROI, simulation |
+| `my_optic_wiki` | `~/my_optic_wiki` | Optics / photon detection — optical simulation, photon sensors, light yield, PDS, DUNE-FD photon systems |
+
+**Selection rules (in order):**
+
+1. If the user provided an explicit wiki path as an argument, use that — skip the rest of this step.
+2. Scan the conversation for domain signals:
+   - WireCell signals: `WireCell`, `wirecell`, `clus`, `sigproc`, `img`, `sst`, `cluster`, `wire plane`, `TPC`, `ROI`, `deconvolution`, `noise filtering`, `blob`, `facade`
+   - Optic signals: `optic`, `photon`, `optical`, `scintillation`, `PDS`, `SiPM`, `light yield`, `dune-fd optics`, `photon detector`
+3. Pick the wiki whose signals dominate the conversation.
+4. If the conversation contains signals from **both** domains, or if the domain is ambiguous, **ask the user** to confirm which wiki before proceeding.
+5. State the chosen wiki to the user (one sentence) before continuing.
+
+---
+
 ## Step 1 — Resolve the wiki path
 
-- If the user provided a path as an argument, use that.
-- Otherwise use the default: `~/my_wirecell_wiki`
+- Use the wiki selected in Step 0.
 - Check that the directory exists (`ls <wiki_path>/wiki/`).
   - If it does not exist: ask the user to provide a valid wiki path, or do nothing if they decline.
 - Read `<wiki_path>/CLAUDE.md` to understand the wiki's schema, page conventions, and index structure before writing anything.
