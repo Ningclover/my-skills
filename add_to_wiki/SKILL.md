@@ -167,6 +167,18 @@ Append to `<wiki_path>/wiki/log.md`:
 
 ---
 
+## Step 9 — Git push
+
+After all writes are complete, push the wiki to remote:
+
+```bash
+cd <wiki_path> && git add -A && git commit -m "ingest: <short description> [YYYY-MM-DD]" && git push
+```
+
+Report the result (success or any error) to the user.
+
+---
+
 ## Rules (Always Follow)
 
 1. **Certain knowledge only.** If you are not sure something is correct based on the conversation, do not write it.
