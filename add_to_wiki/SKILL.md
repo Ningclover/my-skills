@@ -43,7 +43,7 @@ Extract **confirmed code understanding** from the current conversation and persi
 
 ## Step 2 — Read the wiki index
 
-Read `<wiki_path>/wiki/index.md` to understand:
+Read `<wiki_path>/index.md` to understand:
 - What pages already exist
 - How the index is organized (sections and sub-sections)
 - Where new content should be placed
@@ -117,7 +117,7 @@ For each target page:
 
 ## Step 6 — Update the index
 
-- Add any new pages to `<wiki_path>/wiki/index.md` under the correct section.
+- Add any new pages to `<wiki_path>/index.md` under the correct section.
 - Each index entry: one line, format `- [[Page Title]] — one-line description`.
 - Update the `updated:` date at the top of index.md.
 
@@ -150,13 +150,13 @@ updated: <YYYY-MM-DD>
 
 Then, for each page written in step 5, ensure it has a `## Sources` section that includes `- [[source-session-<YYYY-MM-DD>-<slug>]]`.
 
-Also add the new session record to `<wiki_path>/wiki/index.md` under the **Sources** section.
+Also add the new session record to `<wiki_path>/index.md` under the **Sources** section.
 
 ---
 
 ## Step 8 — Append to the log
 
-Append to `<wiki_path>/wiki/log.md`:
+Append to `<wiki_path>/log.md`:
 
 ```
 ## [YYYY-MM-DD] ingest | <short description>
